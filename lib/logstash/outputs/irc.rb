@@ -8,7 +8,6 @@ require "thread"
 class LogStash::Outputs::Irc < LogStash::Outputs::Base
 
   config_name "irc"
-  milestone 1
 
   # Address of the host to connect to
   config :host, :validate => :string, :required => true
