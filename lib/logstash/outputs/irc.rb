@@ -49,6 +49,16 @@ class LogStash::Outputs::Irc < LogStash::Outputs::Base
   config :post_string, :validate => :string, :required => false
 
   public
+
+  def inject_bot(bot)
+    @bot = bot
+    self
+  end
+
+  def bot
+    @bot
+  end
+
   def register
     require "cinch"
     @irc_queue = Queue.new
@@ -77,6 +87,7 @@ class LogStash::Outputs::Irc < LogStash::Outputs::Base
     return unless output?(event)
     @logger.debug("Sending message to channels", :event => event)
     text = event.sprintf(@format)
+
     @bot.channels.each do |channel|
       @logger.debug("Sending to...", :channel => channel, :text => text)
       channel.msg(pre_string) if !@pre_string.nil?
