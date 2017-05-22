@@ -48,6 +48,9 @@ class LogStash::Outputs::Irc < LogStash::Outputs::Base
   # Static string after event
   config :post_string, :validate => :string, :required => false
 
+  # Set this to true to send messages as notice
+  config :notice, :validate => :boolean, :default => false
+
   public
 
   def inject_bot(bot)
@@ -90,9 +93,9 @@ class LogStash::Outputs::Irc < LogStash::Outputs::Base
 
     @bot.channels.each do |channel|
       @logger.debug("Sending to...", :channel => channel, :text => text)
-      channel.msg(pre_string) if !@pre_string.nil?
-      channel.msg(text)
-      channel.msg(post_string) if !@post_string.nil?
+      channel.msg(pre_string, :notice => @notice) if !@pre_string.nil?
+      channel.msg(text, :notice => @notice)
+      channel.msg(post_string, :notice => @notice) if !@post_string.nil?
     end # channels.each
   end # def receive
 end # class LogStash::Outputs::Irc
