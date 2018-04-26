@@ -31,7 +31,7 @@ describe LogStash::Outputs::Irc do
     end
 
     it "sends the generated event to the irc" do
-      expect(channel).to receive(:msg).with("This is a message!")
+      expect(channel).to receive(:msg).with("This is a message!", :notice=>false)
       subject.receive(event)
     end
 
